@@ -2,7 +2,7 @@
 
 GZ HOMEY 氛圍居家選物電商 — 前端（六角學院 前後端整合主題電商專題）
 
-- 線上網站：`https://<vercel-project>.vercel.app`（部署後更新）
+- 線上網站：https://gz-homey-web.vercel.app
 - 後端 API：https://gz-homey-api.onrender.com/api （Repo：`gz-homey-api`）
 - API 文件：https://gz-homey-api.onrender.com/api-docs
 
