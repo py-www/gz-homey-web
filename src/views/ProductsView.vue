@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, nextTick } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import http, { errorMessage } from '../api/http';
 import { CATEGORY_LABEL } from '../utils/categories';
@@ -50,9 +50,16 @@ async function loadProducts() {
       },
     });
     if (myId !== requestId) return;
+    // 舊連結的頁碼超過總頁數（例如 ?page=99）：換成最後一頁，用 replace 不多留一筆瀏覽紀錄
+    const last = data.pagination.totalPages;
+    if (data.products.length === 0 && last > 0 && currentPage.value > last) {
+      router.replace({ name: 'products', query: { ...route.query, page: last > 1 ? last : undefined } });
+      return;
+    }
     products.value = data.products;
     pagination.value = data.pagination;
     status.value = 'ready';
+    nextTick(() => window.dispatchEvent(new Event('gz:list-ready'))); // 通知 router：列表畫好了，可以還原捲動位置
   } catch (err) {
     if (myId !== requestId) return;
     error.value = errorMessage(err, '商品載入失敗');
