@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { login } from '../stores/auth';
+import { fetchCart } from '../stores/cart';
 import { showToast } from '../stores/toast';
 import { errorMessage } from '../api/http';
 import { EMAIL_RE, safeRedirect } from '../utils/validators';
@@ -26,6 +27,7 @@ async function onSubmit() {
   submitting.value = true;
   try {
     await login(form.email.trim(), form.password);
+    await fetchCart();
     showToast('登入成功，歡迎回來！');
     router.push(safeRedirect(route.query.redirect));
   } catch (err) {

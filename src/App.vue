@@ -2,6 +2,7 @@
 import AppNavbar from './components/AppNavbar.vue';
 import AppFooter from './components/AppFooter.vue';
 import ToastContainer from './components/ToastContainer.vue';
+import CartOffcanvas from './components/CartOffcanvas.vue';
 </script>
 
 <template>
@@ -12,5 +13,6 @@ import ToastContainer from './components/ToastContainer.vue';
     </main>
     <AppFooter />
   </div>
+  <CartOffcanvas />
   <ToastContainer />
 </template>

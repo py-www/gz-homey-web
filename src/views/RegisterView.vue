@@ -2,6 +2,7 @@
 import { reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { register } from '../stores/auth';
+import { fetchCart } from '../stores/cart';
 import { showToast } from '../stores/toast';
 import { errorMessage } from '../api/http';
 import { EMAIL_RE, safeRedirect } from '../utils/validators';
@@ -29,6 +30,7 @@ async function onSubmit() {
   submitting.value = true;
   try {
     await register({ name: form.name.trim(), email: form.email.trim(), password: form.password });
+    await fetchCart();
     showToast('註冊成功，已自動登入！');
     router.push(safeRedirect(route.query.redirect));
   } catch (err) {

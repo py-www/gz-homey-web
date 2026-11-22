@@ -5,6 +5,7 @@ import './assets/main.css';
 import App from './App.vue';
 import router from './router';
 import { restoreSession } from './stores/auth';
+import { fetchCart } from './stores/cart';
 
 createApp(App).use(router).mount('#app');
-restoreSession(); // 重新整理後用 token 拿回使用者
+restoreSession().then(fetchCart); // 先確認登入，再拿購物車
