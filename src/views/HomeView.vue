@@ -50,9 +50,7 @@ onMounted(load);
       <h1 id="hero-title" class="stage-title">為家留一點<br />氛圍</h1>
       <p class="hero-full-lead">一盞燈、一顆蠟燭、一條毯子。我們把居家小物挑好了，小預算也能住出好氛圍。</p>
       <div class="d-flex flex-wrap gap-2">
-        <RouterLink class="btn btn-light btn-lg" to="/products">逛逛全部商品</RouterLink>
-        <a class="btn btn-outline-light btn-lg" href="#cat-title">依分類逛</a>
-      </div>
+        <RouterLink class="btn btn-light btn-lg" to="/products">逛逛全部商品</RouterLink>      </div>
     </div>
   </section>
 
@@ -60,22 +58,8 @@ onMounted(load);
   <StatusMessage v-else-if="status === 'error'" type="error" :message="error" class="container-gz" @retry="load" />
 
   <template v-else>
-    <!-- 2. 依分類逛：4 張直式卡片 -->
-    <section class="container-gz home-sec" aria-labelledby="cat-title">
-      <div class="sec-head">
-        <h2 v-reveal id="cat-title" class="section-title mb-0">依分類逛<span class="en title-en">Shop by Category</span></h2>
-        <RouterLink v-reveal="80" to="/products" class="link-offset-2 text-nowrap">看全部 →</RouterLink>
-      </div>
-      <div class="cat-grid">
-        <RouterLink v-for="(c, i) in categories" :key="c.id" v-reveal="i * 70" :to="{ name: 'products', query: { category: c.slug } }" class="cat-card">
-          <div class="cat-card-img"><img :src="catImg(c.slug)" :alt="c.name" loading="lazy" width="800" height="1000" /></div>
-          <h3 class="cat-card-name">{{ c.name }}<span class="en">{{ CATEGORY_LABEL[c.slug]?.en ?? '' }}</span></h3>
-        </RouterLink>
-      </div>
-    </section>
-
-    <!-- 3. 精選系列：一大兩小 -->
-    <section v-if="collections.length" class="container-gz home-sec pt-0" aria-label="精選系列">
+    <!-- 精選系列：一大兩小（原本上面的「依分類逛」已拿掉，之後改成「依空間逛」） -->
+    <section v-if="collections.length" class="container-gz home-sec" aria-label="精選系列">
       <div class="coll-grid">
         <RouterLink
           v-for="(c, i) in collections"
