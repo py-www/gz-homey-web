@@ -1,0 +1,52 @@
+/* ===== 暖色系主題（Option 1、2 配色）=====
+   只在 <html data-theme="warm"> 時生效；原本的黑白主題完全不動。
+   切換：網址加 ?theme=warm（暖色）或 ?theme=default（黑白），會記在 localStorage。 */
+html[data-theme='warm'] {
+  --gz-ivory: #f8f7f4;
+  --gz-linen: #e8e2d9;
+  --gz-sand: #c4b6a5;
+  --gz-taupe: #76685b;
+  --gz-charcoal: #292824;
+
+  --gz-bg: var(--gz-ivory); /* 頁面底色 */
+  --gz-soft: var(--gz-linen); /* 次要底色：商品圖底、色帶 */
+  --gz-band: #ddd5ca; /* 細線、輸入框邊框（介於 Linen 與 Sand） */
+  --gz-ink: var(--gz-charcoal); /* 標題與內文 */
+  --gz-muted: var(--gz-taupe); /* 次要文字（Ivory 底對比約 5.3:1） */
+  --gz-dark: var(--gz-charcoal); /* 公告條、Footer、深色區塊 */
+  --gz-accent: var(--gz-charcoal);
+  --gz-greige: var(--gz-linen);
+  --gz-serif: 'Cormorant Garamond', 'Noto Serif TC', Georgia, serif; /* 英文用 Cormorant，中文自動退到 Noto Serif TC */
+
+  --bs-link-color-rgb: 41, 40, 36;
+  --bs-link-hover-color-rgb: 118, 104, 91;
+}
+
+/* # 標題（h1）、## 次標（h2）換襯線字；其他字（內文、價格、按鈕）維持原本無襯線 */
+html[data-theme='warm'] h1,
+html[data-theme='warm'] h2,
+html[data-theme='warm'] .stage-title,
+html[data-theme='warm'] .section-title {
+  font-family: var(--gz-serif);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* 原本寫死成純白 / 純黑的地方，改成 Ivory / Charcoal */
+html[data-theme='warm'] .form-control,
+html[data-theme='warm'] .form-control:focus,
+html[data-theme='warm'] .field-dark .product-card {
+  background-color: #fff;
+}
+html[data-theme='warm'] .field-dark { background: var(--gz-charcoal); color: var(--gz-ivory); }
+html[data-theme='warm'] .field-dark .en { color: var(--gz-sand); }
+html[data-theme='warm'] .hero-full::after { background: rgba(41, 40, 36, 0.4); }
+html[data-theme='warm'] .coll-card::after { background: linear-gradient(0deg, rgba(41, 40, 36, 0.55), transparent 55%); }
+html[data-theme='warm'] .edit-img-b { border-color: var(--gz-linen); }
+html[data-theme='warm'] .btn-light { --bs-btn-bg: var(--gz-ivory); --bs-btn-border-color: var(--gz-ivory); --bs-btn-hover-bg: var(--gz-linen); --bs-btn-hover-border-color: var(--gz-linen); }
+
+/* Footer：純白字改成 Ivory / Sand，跟暖色調一致 */
+html[data-theme='warm'] .site-footer { color: var(--gz-sand); }
+html[data-theme='warm'] .site-footer .text-white,
+html[data-theme='warm'] .site-footer .link-light { color: var(--gz-ivory) !important; }
+html[data-theme='warm'] .footer-bottom { border-top-color: rgba(196, 182, 165, 0.25); }
