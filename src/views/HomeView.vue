@@ -44,7 +44,7 @@ onMounted(load);
 <template>
   <!-- 1. Hero：滿版照片＋左下文字 -->
   <section class="hero-full" aria-labelledby="hero-title">
-    <img src="/images/hero.jpg" alt="明亮的客廳：弧形白沙發、木頭圓桌與兩張單椅" width="1320" height="752" fetchpriority="high" />
+    <img src="/images/hero.jpg" alt="夕陽暖光的客廳：米白色 L 型沙發、木頭圓桌與搖椅" width="800" height="600" fetchpriority="high" />
     <div class="container-gz hero-full-body">
       <p class="eyebrow mb-3">香氛蠟燭・燈具・織品・擺飾<span v-if="total">　{{ total }} 件選物</span></p>
       <h1 id="hero-title" class="stage-title">為家留一點<br />氛圍</h1>
