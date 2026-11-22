@@ -12,13 +12,9 @@ const total = ref(0);
 const status = ref('loading'); // loading | ready | error
 const error = ref('');
 
-// shortcut: 分類情境照先用 picsum 精選室內照（Unsplash 授權），有自己的分類照片後換掉
-const CAT_PHOTO = { candles: 225, lighting: 311, decor: 305 };
-const CAT_UNSPLASH = { textiles: '1601276174812-63280a55656e' }; // 已審核：陽光打在白色床品上
-const catImg = (slug, w = 800, h = 1000) =>
-  CAT_UNSPLASH[slug]
-    ? `https://images.unsplash.com/photo-${CAT_UNSPLASH[slug]}?w=${w}&h=${h}&fit=crop&auto=format`
-    : `https://picsum.photos/id/${CAT_PHOTO[slug] ?? 24}/${w}/${h}`;
+// 分類照放在 public/images/cat-<slug>.jpg（candles / lighting / textiles / decor）
+// shortcut: 只有這 4 個分類有照片，後端新增分類時要補一張同名照片，不然會破圖
+const catImg = (slug) => `/images/cat-${slug}.jpg`;
 
 // 精選系列：取前三個分類，第一個大圖、後兩個疊在右邊
 const collections = computed(() => categories.value.slice(0, 3));
@@ -48,8 +44,7 @@ onMounted(load);
 <template>
   <!-- 1. Hero：滿版照片＋左下文字 -->
   <section class="hero-full" aria-labelledby="hero-title">
-    <!-- shortcut: hero 先用 picsum 精選室內照，有自己的情境照後換掉 -->
-    <img src="https://picsum.photos/id/625/1920/1080" alt="白天的餐廳：木桌、白色椅子與大片窗光" width="1920" height="1080" fetchpriority="high" />
+    <img src="/images/hero.jpg" alt="明亮的客廳：弧形白沙發、木頭圓桌與兩張單椅" width="1320" height="752" fetchpriority="high" />
     <div class="container-gz hero-full-body">
       <p class="eyebrow mb-3">香氛蠟燭・燈具・織品・擺飾<span v-if="total">　{{ total }} 件選物</span></p>
       <h1 id="hero-title" class="stage-title">為家留一點<br />氛圍</h1>
@@ -89,7 +84,7 @@ onMounted(load);
           :to="{ name: 'products', query: { category: c.slug } }"
           :class="['coll-card', { 'coll-card-lg': i === 0 }]"
         >
-          <img :src="catImg(c.slug, 1200, 1200)" alt="" loading="lazy" />
+          <img :src="catImg(c.slug)" alt="" loading="lazy" />
           <div class="coll-card-txt">
             <p class="eyebrow mb-2">{{ i === 0 ? '本季精選' : 'Collection' }}</p>
             <h3 class="coll-card-title">{{ c.name }}<span class="en">{{ CATEGORY_LABEL[c.slug]?.en ?? '' }}</span></h3>
@@ -113,8 +108,8 @@ onMounted(load);
     <section class="field-soft home-sec" aria-labelledby="edit-title">
       <div class="container-gz edit-grid">
         <div v-reveal class="edit-imgs">
-          <img class="edit-img-a" src="https://picsum.photos/id/311/1000/1250" alt="" loading="lazy" />
-          <img class="edit-img-b" src="https://picsum.photos/id/225/600/800" alt="" loading="lazy" />
+          <img class="edit-img-a" src="/images/edit-a.jpg" alt="" loading="lazy" />
+          <img class="edit-img-b" src="/images/edit-b.jpg" alt="" loading="lazy" />
         </div>
         <div v-reveal="100">
           <p class="eyebrow mb-3">Journal・居家提案</p>

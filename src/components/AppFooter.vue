@@ -24,7 +24,7 @@
       </div>
       <div class="footer-bottom d-flex flex-column flex-md-row justify-content-between gap-1 small">
         <p class="mb-0">© 2026 GZ HOMEY · 六角學院專題作品，非真實商店</p>
-        <p class="mb-0">照片：Unsplash（Unsplash License）</p>
+        <p class="mb-0">商品照片：Unsplash（Unsplash License）</p>
       </div>
     </div>
   </footer>

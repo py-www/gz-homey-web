@@ -41,7 +41,7 @@ async function onSubmit() {
 <template>
   <section class="auth" aria-labelledby="login-title">
     <div class="auth-photo">
-      <img src="https://images.unsplash.com/photo-1791889785360-2116381eed05?w=1600&h=1200&fit=crop&auto=format" alt="" width="1600" height="1200" />
+      <img src="/images/login.jpg" alt="" width="1456" height="816" />
     </div>
     <div class="auth-sheet">
       <h1 id="login-title" class="section-title mb-2">會員登入<span class="en title-en">Sign in</span></h1>

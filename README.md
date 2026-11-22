@@ -45,4 +45,4 @@ npm run dev            # http://localhost:5173
 | `VITE_API_BASE` | 後端 API 網址（結尾 `/api`） | `http://localhost:3000/api` |
 
 ## 圖片來源
-商品照、首頁與登入頁情境照來自 [Unsplash](https://unsplash.com)（Unsplash License，可免費商用）；首頁部分情境照經由 picsum.photos 取用 Unsplash 照片。本站為專題作品，照片僅作示意，不代表實際商品。
+商品照來自 [Unsplash](https://unsplash.com)（Unsplash License，可免費商用）；首頁與登入頁的情境照為作者自備，放在 `public/images/`。本站為專題作品，照片僅作示意，不代表實際商品。
