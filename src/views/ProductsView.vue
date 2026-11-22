@@ -2,6 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import http, { errorMessage } from '../api/http';
+import { CATEGORY_LABEL } from '../utils/categories';
 import ProductCard from '../components/ProductCard.vue';
 import PaginationNav from '../components/PaginationNav.vue';
 import StatusMessage from '../components/StatusMessage.vue';
@@ -80,47 +81,59 @@ onMounted(loadCategories);
 </script>
 
 <template>
-  <section class="container-gz py-5">
-    <h1 class="section-title mb-4">{{ currentCategoryName }}</h1>
+  <div>
+    <div class="container-gz py-4 py-lg-5">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb small mb-2">
+          <li class="breadcrumb-item"><RouterLink to="/">首頁</RouterLink></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ currentCategoryName }}</li>
+        </ol>
+      </nav>
+      <h1 class="section-title mb-0">
+        {{ currentCategoryName }}<span class="en title-en">{{ currentCategory ? CATEGORY_LABEL[currentCategory]?.en : 'All' }}</span>
+      </h1>
+    </div>
+  </div>
 
-    <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center mb-4">
-      <nav aria-label="商品分類" class="overflow-auto">
-        <ul class="nav nav-pills flex-nowrap text-nowrap">
-          <li class="nav-item">
-            <button class="nav-link" :class="{ active: !currentCategory }" type="button" @click="updateQuery({ category: '' })">全部</button>
-          </li>
-          <li v-for="c in categories" :key="c.id" class="nav-item">
-            <button class="nav-link" :class="{ active: currentCategory === c.slug }" type="button" @click="updateQuery({ category: c.slug })">
-              {{ c.name }}
-            </button>
+  <div class="container-gz py-4 py-lg-5">
+    <div class="row g-4 g-xl-5">
+      <!-- 桌機：左側欄（Outstock 式）；手機不顯示，用 Header 的分類列與搜尋框 -->
+      <aside class="col-lg-3 d-none d-lg-block" aria-label="篩選商品">
+        <form class="d-flex gap-2 mb-4" role="search" @submit.prevent="updateQuery({ q: keyword.trim() })">
+          <label for="product-search" class="visually-hidden">在商品中搜尋</label>
+          <input id="product-search" v-model="keyword" type="search" class="form-control form-control-sm" placeholder="搜尋商品" />
+          <button class="btn btn-dark btn-sm text-nowrap" type="submit">搜尋</button>
+        </form>
+
+        <h2 class="fs-6 fw-semibold mb-2">商品分類</h2>
+        <ul class="side-list list-unstyled mb-0">
+          <li><button type="button" :class="{ active: !currentCategory }" @click="updateQuery({ category: '' })">所有商品</button></li>
+          <li v-for="c in categories" :key="c.id">
+            <button type="button" :class="{ active: currentCategory === c.slug }" @click="updateQuery({ category: c.slug })">{{ c.name }}</button>
           </li>
         </ul>
-      </nav>
+      </aside>
 
-      <form class="d-flex gap-2" role="search" style="max-width: 360px" @submit.prevent="updateQuery({ q: keyword.trim() })">
-        <label for="product-search" class="visually-hidden">搜尋商品</label>
-        <input id="product-search" v-model="keyword" type="search" class="form-control" placeholder="搜尋商品，例如：木、蠟燭" />
-        <button class="btn btn-dark text-nowrap" type="submit">搜尋</button>
-      </form>
+      <section class="col-lg-9" aria-label="商品列表">
+        <p v-if="status === 'ready'" class="small text-body-secondary mb-3">
+          <template v-if="currentQ">「{{ currentQ }}」的搜尋結果：</template>共 {{ pagination.total }} 件商品
+        </p>
+
+        <StatusMessage v-if="status === 'loading'" type="loading" message="商品載入中…（第一次開啟可能需要等伺服器喚醒）" />
+        <StatusMessage v-else-if="status === 'error'" type="error" :message="error" @retry="loadProducts" />
+        <StatusMessage v-else-if="products.length === 0" type="empty" message="查無符合條件的商品">
+          <button class="btn btn-outline-dark btn-sm" type="button" @click="router.push({ name: 'products' })">清除篩選條件</button>
+        </StatusMessage>
+
+        <template v-else>
+          <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3 g-lg-4 row-gap-5">
+            <div v-for="(p, i) in products" :key="p.id" v-reveal="(i % 4) * 60" class="col">
+              <ProductCard :product="p" />
+            </div>
+          </div>
+          <PaginationNav :page="pagination.page" :total-pages="pagination.totalPages" @change="(p) => updateQuery({ page: p })" />
+        </template>
+      </section>
     </div>
-
-    <p v-if="status === 'ready' && currentQ" class="text-muted small">
-      「{{ currentQ }}」的搜尋結果：共 {{ pagination.total }} 件
-    </p>
-
-    <StatusMessage v-if="status === 'loading'" type="loading" message="商品載入中…（第一次開啟可能需要等伺服器喚醒）" />
-    <StatusMessage v-else-if="status === 'error'" type="error" :message="error" @retry="loadProducts" />
-    <StatusMessage v-else-if="products.length === 0" type="empty" message="查無符合條件的商品">
-      <button class="btn btn-outline-dark btn-sm" type="button" @click="router.push({ name: 'products' })">清除篩選條件</button>
-    </StatusMessage>
-
-    <template v-else>
-      <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 g-lg-4">
-        <div v-for="p in products" :key="p.id" class="col">
-          <ProductCard :product="p" />
-        </div>
-      </div>
-      <PaginationNav :page="pagination.page" :total-pages="pagination.totalPages" @change="(p) => updateQuery({ page: p })" />
-    </template>
-  </section>
+  </div>
 </template>

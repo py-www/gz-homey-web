@@ -39,28 +39,34 @@ async function onSubmit() {
 </script>
 
 <template>
-  <section class="container-gz py-5" style="max-width: 480px">
-    <h1 class="section-title mb-4 text-center">會員登入</h1>
-    <form class="bg-white rounded-4 p-4 p-md-5" novalidate @submit.prevent="onSubmit">
-      <div v-if="serverError" class="alert alert-danger py-2" role="alert">{{ serverError }}</div>
-      <div class="mb-3">
-        <label for="login-email" class="form-label">Email</label>
-        <input id="login-email" v-model="form.email" type="email" class="form-control" :class="{ 'is-invalid': errors.email }" autocomplete="email" />
-        <div class="invalid-feedback">{{ errors.email }}</div>
-      </div>
-      <div class="mb-4">
-        <label for="login-password" class="form-label">密碼</label>
-        <input id="login-password" v-model="form.password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" autocomplete="current-password" />
-        <div class="invalid-feedback">{{ errors.password }}</div>
-      </div>
-      <button class="btn btn-dark w-100" type="submit" :disabled="submitting">
-        <span v-if="submitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-        {{ submitting ? '登入中…' : '登入' }}
-      </button>
-      <p class="text-center small mt-3 mb-0">
-        還沒有帳號？
-        <RouterLink :to="{ name: 'register', query: route.query }">立即註冊</RouterLink>
-      </p>
-    </form>
+  <section class="auth" aria-labelledby="login-title">
+    <div class="auth-photo">
+      <img src="/images/hero.webp" alt="" width="1024" height="683" />
+    </div>
+    <div class="auth-sheet">
+      <h1 id="login-title" class="section-title mb-2">會員登入<span class="en title-en">Sign in</span></h1>
+      <p class="text-body-secondary mb-4">登入後，購物車會跟著你的帳號。</p>
+      <form novalidate @submit.prevent="onSubmit">
+        <div v-if="serverError" class="alert alert-danger py-2" role="alert">{{ serverError }}</div>
+        <div class="mb-3">
+          <label for="login-email" class="form-label">Email</label>
+          <input id="login-email" v-model="form.email" type="email" class="form-control" :class="{ 'is-invalid': errors.email }" autocomplete="email" />
+          <div class="invalid-feedback">{{ errors.email }}</div>
+        </div>
+        <div class="mb-4">
+          <label for="login-password" class="form-label">密碼</label>
+          <input id="login-password" v-model="form.password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }" autocomplete="current-password" />
+          <div class="invalid-feedback">{{ errors.password }}</div>
+        </div>
+        <button class="btn btn-dark btn-lg w-100" type="submit" :disabled="submitting">
+          <span v-if="submitting" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+          {{ submitting ? '登入中…' : '登入' }}
+        </button>
+        <p class="mt-4 mb-0">
+          還沒有帳號？
+          <RouterLink :to="{ name: 'register', query: route.query }">立即註冊</RouterLink>
+        </p>
+      </form>
+    </div>
   </section>
 </template>

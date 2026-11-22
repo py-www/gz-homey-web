@@ -4,8 +4,9 @@ import 'bootstrap'; // 啟用 data-bs-* 互動（Navbar 收合、Offcanvas）
 import './assets/main.css';
 import App from './App.vue';
 import router from './router';
+import reveal from './reveal';
 import { restoreSession } from './stores/auth';
 import { fetchCart } from './stores/cart';
 
-createApp(App).use(router).mount('#app');
+createApp(App).use(router).directive('reveal', reveal).mount('#app');
 restoreSession().then(fetchCart); // 先確認登入，再拿購物車

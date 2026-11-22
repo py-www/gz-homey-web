@@ -17,7 +17,7 @@ function goTo(to) {
 <template>
   <aside id="cartOffcanvas" class="offcanvas offcanvas-end" style="--bs-offcanvas-bg: var(--gz-bg)" tabindex="-1" aria-labelledby="cartOffcanvasLabel">
     <div class="offcanvas-header">
-      <h2 id="cartOffcanvasLabel" class="offcanvas-title h5 mb-0">購物車</h2>
+      <h2 id="cartOffcanvasLabel" class="offcanvas-title fs-3 mb-0">購物車<span class="en fs-6 ms-2">Cart</span></h2>
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="關閉購物車"></button>
     </div>
 
@@ -39,36 +39,34 @@ function goTo(to) {
 
       <template v-else>
         <ul class="list-unstyled flex-grow-1 mb-3">
-          <li v-for="item in cartState.items" :key="item.productId" class="d-flex gap-3 p-3 mb-2 bg-white rounded-4">
-            <img :src="item.product.imageUrl" :alt="item.product.name" width="72" height="72" class="rounded-3 flex-shrink-0" style="object-fit: cover" />
-            <div class="flex-grow-1 min-w-0">
+          <li v-for="item in cartState.items" :key="item.productId" class="cart-item">
+            <img :src="item.product.imageUrl" :alt="item.product.name" width="76" height="95" />
+            <div class="min-w-0">
               <button class="btn btn-link p-0 text-reset text-start text-decoration-none fw-medium" type="button" @click="goTo({ name: 'product', params: { id: item.productId } })">
                 {{ item.product.name }}
               </button>
-              <p class="small text-muted mb-2">{{ formatPrice(item.product.price) }}</p>
-              <span v-if="!item.product.isActive" class="badge text-bg-secondary">已下架，請移除</span>
-              <div v-else class="d-flex align-items-center gap-2">
-                <div class="input-group input-group-sm" style="width: 110px">
-                  <button class="btn btn-outline-secondary" type="button" aria-label="減少數量" :disabled="item.quantity <= 1 || cartState.busyId === item.productId" @click="updateCartItem(item.productId, item.quantity - 1)">−</button>
-                  <span class="form-control text-center" aria-live="polite">{{ item.quantity }}</span>
-                  <button class="btn btn-outline-secondary" type="button" aria-label="增加數量" :disabled="item.quantity >= item.product.stock || cartState.busyId === item.productId" @click="updateCartItem(item.productId, item.quantity + 1)">+</button>
-                </div>
+              <p class="small text-body-secondary mb-2">{{ formatPrice(item.product.price) }}</p>
+              <span v-if="!item.product.isActive" class="small text-danger">已下架，請移除</span>
+              <div v-else class="qty">
+                <button type="button" aria-label="減少數量" :disabled="item.quantity <= 1 || cartState.busyId === item.productId" @click="updateCartItem(item.productId, item.quantity - 1)">−</button>
+                <output aria-live="polite" :aria-label="`數量 ${item.quantity}`">{{ item.quantity }}</output>
+                <button type="button" aria-label="增加數量" :disabled="item.quantity >= item.product.stock || cartState.busyId === item.productId" @click="updateCartItem(item.productId, item.quantity + 1)">+</button>
               </div>
             </div>
             <div class="text-end d-flex flex-column justify-content-between">
-              <span class="fw-bold small">{{ formatPrice(item.subtotal) }}</span>
-              <button class="btn btn-sm btn-link text-danger p-0" type="button" :disabled="cartState.busyId === item.productId" @click="removeCartItem(item.productId)">移除</button>
+              <span class="fw-medium">{{ formatPrice(item.subtotal) }}</span>
+              <button class="btn btn-link p-0 small text-body-secondary" type="button" :disabled="cartState.busyId === item.productId" @click="removeCartItem(item.productId)">移除</button>
             </div>
           </li>
         </ul>
-        <div class="bg-white rounded-4 p-3">
+        <div class="cart-total">
           <div class="d-flex justify-content-between mb-1">
             <span>商品數量</span><span>{{ cartState.totalQuantity }} 件</span>
           </div>
-          <div class="d-flex justify-content-between fs-5 fw-bold">
+          <div class="d-flex justify-content-between fs-4 fw-medium">
             <span>合計</span><span>{{ formatPrice(cartState.totalPrice) }}</span>
           </div>
-          <p class="small text-muted mt-2 mb-0">本站為專題作品，未開放結帳。</p>
+          <p class="small text-body-secondary mt-2 mb-0">本站為專題作品，未開放結帳。</p>
         </div>
       </template>
     </div>

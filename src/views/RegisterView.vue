@@ -44,7 +44,7 @@ async function onSubmit() {
 <template>
   <section class="container-gz py-5" style="max-width: 480px">
     <h1 class="section-title mb-4 text-center">建立帳號</h1>
-    <form class="bg-white rounded-4 p-4 p-md-5" novalidate @submit.prevent="onSubmit">
+    <form class="band-soft rounded-3 p-4 p-md-5" novalidate @submit.prevent="onSubmit">
       <div v-if="serverError" class="alert alert-danger py-2" role="alert">{{ serverError }}</div>
       <div class="mb-3">
         <label for="reg-name" class="form-label">名稱</label>
