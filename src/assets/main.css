@@ -187,14 +187,19 @@ h2,
   margin-inline: 0.5em;
   color: var(--gz-band);
 }
-/* 手機：中英對照放不下一行，只留中文、5 個分類平均排開（不讓使用者左右滑才看得到） */
+/* 手機：分類列平常收起來，按右上角 ☰ 才往下展開成直的選單（中英對照照樣顯示） */
 @media (max-width: 767.98px) {
-  .cat-bar .en {
+  .cat-bar {
     display: none;
   }
+  .cat-bar.is-open {
+    display: block;
+  }
   .cat-bar ul {
-    justify-content: space-between;
-    column-gap: 0.5rem !important;
+    flex-direction: column;
+  }
+  .cat-bar li + li {
+    border-top: 1px solid var(--gz-band); /* line token：選單項目分隔 */
   }
 }
 .title-en {

@@ -12,6 +12,22 @@ const router = useRouter();
 
 const categories = ref([]);
 const keyword = ref('');
+const menuOpen = ref(false); // 手機版分類選單（右上角 ☰）
+const menuBtn = ref(null);
+
+// 按 Esc 關選單時，鍵盤焦點回到 ☰ 按鈕（不然焦點會掉到頁面最上面）
+function closeMenu() {
+  menuOpen.value = false;
+  menuBtn.value?.focus();
+}
+
+// 換頁（點了分類、搜尋、回首頁）就把選單收起來
+watch(
+  () => route.fullPath,
+  () => {
+    menuOpen.value = false;
+  },
+);
 
 // 搜尋框跟著網址的 ?q= 走（在商品頁重新整理也會保留文字）
 watch(
@@ -92,11 +108,25 @@ onMounted(async () => {
               {{ cartState.totalQuantity }}
             </span>
           </button>
+          <button
+            ref="menuBtn"
+            class="btn icon-btn d-md-none ms-1"
+            type="button"
+            aria-controls="catMenu"
+            :aria-expanded="menuOpen"
+            :aria-label="menuOpen ? '關閉分類選單' : '開啟分類選單'"
+            @click="menuOpen = !menuOpen"
+          >
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+              <path v-if="menuOpen" d="M6 6l12 12M18 6 6 18" />
+              <path v-else d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
 
-    <nav class="cat-bar" aria-label="商品分類">
+    <nav id="catMenu" class="cat-bar" :class="{ 'is-open': menuOpen }" aria-label="商品分類" @keydown.esc="closeMenu">
       <ul class="container-gz list-unstyled d-flex column-gap-4 column-gap-lg-5 mb-0">
         <li>
           <RouterLink :to="{ name: 'products' }" :class="{ 'is-active': isActive('') }">所有商品<span class="en">All</span></RouterLink>
