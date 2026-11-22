@@ -84,6 +84,8 @@ h2,
   transform: scale(0.97);
 }
 .btn-dark {
+  /* 框線和底色同色、看不出來；留著時 Chrome 會在按鈕下緣畫出白色破點，所以拿掉 */
+  --bs-btn-border-width: 0;
   --bs-btn-bg: var(--gz-accent);
   --bs-btn-border-color: var(--gz-accent);
   --bs-btn-color: var(--gz-accent-ink);
@@ -644,3 +646,10 @@ h2,
 /* 首頁會員區：跟 Footer 拉開距離，避免兩塊連在一起 */
 .member-band { margin-bottom: 0; }
 .footer-bottom { border-top: 1px solid rgba(255, 255, 255, 0.15); padding-top: 1.5rem; }
+
+/* 商品頁數量：−/+ 固定 44px（手指好按），中間留給數字；全站 .btn 的左右 padding 太大會把數字擠不見 */
+.qty-btn {
+  --bs-btn-padding-x: 0;
+  width: 44px;
+  flex: 0 0 44px;
+}

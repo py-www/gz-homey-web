@@ -115,13 +115,14 @@ async function onAdd() {
                   <label for="qty" class="fw-medium">數量</label>
                   <span class="small text-body-secondary">庫存 {{ product.stock }} 件</span>
                 </div>
-                <div class="d-flex gap-2">
-                  <div class="input-group flex-nowrap" style="width: 140px">
-                    <button class="btn btn-light" type="button" aria-label="減少數量" :disabled="qty <= 1" @click="changeQty(-1)">−</button>
+                <!-- 窄螢幕放不下就換行：「加入購物車」掉到下一行、整排寬 -->
+                <div class="d-flex flex-wrap gap-2">
+                  <div class="input-group flex-nowrap flex-shrink-0" style="width: 150px">
+                    <button class="btn btn-light qty-btn" type="button" aria-label="減少數量" :disabled="qty <= 1" @click="changeQty(-1)">−</button>
                     <input id="qty" v-model.number="qty" type="number" min="1" :max="product.stock" class="form-control text-center bg-white border-white px-1" />
-                    <button class="btn btn-light" type="button" aria-label="增加數量" :disabled="qty >= product.stock" @click="changeQty(1)">+</button>
+                    <button class="btn btn-light qty-btn" type="button" aria-label="增加數量" :disabled="qty >= product.stock" @click="changeQty(1)">+</button>
                   </div>
-                  <button class="btn btn-dark btn-lg flex-grow-1" type="submit" :disabled="adding">
+                  <button class="btn btn-dark btn-lg flex-grow-1 text-nowrap" style="min-width: 11rem" type="submit" :disabled="adding">
                     <span v-if="adding" class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
                     {{ adding ? '加入中…' : '加入購物車' }}
                   </button>
