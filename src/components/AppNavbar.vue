@@ -54,12 +54,16 @@ function onLogout() {
   router.push({ name: 'home' });
 }
 
+// Render 免費方案喚醒或重新部署時，第一次請求可能失敗：最多試 4 次、每次隔 5 秒；都失敗才只留「所有商品」
 onMounted(async () => {
-  try {
-    const { data } = await http.get('/categories');
-    categories.value = data.categories;
-  } catch {
-    categories.value = []; // 分類列載入失敗時只留「所有商品」
+  for (let i = 0; i < 4; i += 1) {
+    try {
+      const { data } = await http.get('/categories');
+      categories.value = data.categories;
+      return;
+    } catch {
+      await new Promise((r) => setTimeout(r, 5000));
+    }
   }
 });
 </script>
