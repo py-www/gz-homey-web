@@ -187,9 +187,15 @@ h2,
   margin-inline: 0.5em;
   color: var(--gz-band);
 }
-.cat-bar ul {
-  overflow-x: auto; /* 手機：中英對照放不下一行，改成左右滑 */
-  scrollbar-width: none;
+/* 手機：中英對照放不下一行，只留中文、5 個分類平均排開（不讓使用者左右滑才看得到） */
+@media (max-width: 767.98px) {
+  .cat-bar .en {
+    display: none;
+  }
+  .cat-bar ul {
+    justify-content: space-between;
+    column-gap: 0.5rem !important;
+  }
 }
 .title-en {
   display: block;
